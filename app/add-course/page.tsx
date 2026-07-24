@@ -50,7 +50,7 @@ export default function AddCoursePage() {
                 {
                   icon: Sparkles,
                   title: 'AI reads it',
-                  desc: 'GPT-4o-mini extracts all topics, weights them by importance.',
+                  desc: 'Gemini 3.5 Flash extracts all topics, weights them by importance.',
                 },
                 {
                   icon: Calendar,

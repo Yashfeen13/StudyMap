@@ -1,15 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
 import { createServerClient } from '@/lib/supabase/server';
 import type { PlanRequest, StudyPlan } from '@/lib/types';
 
 // Force dynamic — never statically evaluated at build time
 export const dynamic = 'force-dynamic';
-
-// Lazily instantiate so the env var is only checked at request time, not build time
-function getOpenAI() {
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-}
 
 const SYSTEM_PROMPT = `You are a study planning assistant. Given a course syllabus and an exam or deadline date, break the syllabus into weekly study topics, weighted by how much material each topic covers and how close it is to assessments.
 
@@ -103,19 +97,50 @@ export async function POST(req: NextRequest) {
 
     const userPrompt = buildUserPrompt(body);
 
-    // Call OpenAI with JSON mode
-    const completion = await getOpenAI().chat.completions.create({
-      model: 'gpt-4o-mini',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 3000,
+    // Call Gemini using the REST API
+    const geminiApiKey = process.env.GEMINI_API_KEY;
+    if (!geminiApiKey) {
+      return NextResponse.json(
+        { error: 'GEMINI_API_KEY is missing from environment variables.' },
+        { status: 500 }
+      );
+    }
+
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${geminiApiKey}`;
+    
+    const response = await fetch(geminiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: SYSTEM_PROMPT }]
+        },
+        contents: [
+          {
+            parts: [{ text: userPrompt }]
+          }
+        ],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          temperature: 0.3
+        }
+      })
     });
 
-    const rawContent = completion.choices[0]?.message?.content;
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('Gemini API error:', errText);
+      return NextResponse.json(
+        { error: 'Failed to generate plan from Gemini API.' },
+        { status: 500 }
+      );
+    }
+
+    const data = await response.json();
+    const rawContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    
     if (!rawContent) {
       return NextResponse.json(
         { error: 'AI returned an empty response. Please try again.' },
@@ -155,10 +180,10 @@ export async function POST(req: NextRequest) {
     console.error('Generate plan error:', err);
     const message = err instanceof Error ? err.message : 'An unexpected error occurred';
     
-    // Check for OpenAI API key issues
-    if (message.includes('API key') || message.includes('401')) {
+    // Check for API key issues
+    if (message.includes('API_KEY') || message.includes('API key') || message.includes('401') || message.includes('403')) {
       return NextResponse.json(
-        { error: 'AI service configuration error. Please check the API key.' },
+        { error: 'AI service configuration error. Please check your GEMINI_API_KEY.' },
         { status: 500 }
       );
     }

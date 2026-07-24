@@ -43,7 +43,7 @@ University students receive a course syllabus at the start of term and have no i
 
 ### What It Does
 
-**Initial Plan Generation** — When you submit a syllabus, StudyMap calls OpenAI's GPT-4o-mini from a server-side API route (`/api/generate-plan`). The model reads the entire syllabus, identifies all distinct topics, estimates each topic's weight/complexity relative to the others, and distributes them across weeks leading up to your exam date. Heavier topics get more study hours; topics close to assessments are scheduled earlier.
+**Initial Plan Generation** — When you submit a syllabus, StudyMap calls Google's Gemini 3.5 Flash from a server-side API route (`/api/generate-plan`). The model reads the entire syllabus, identifies all distinct topics, estimates each topic's weight/complexity relative to the others, and distributes them across weeks leading up to your exam date. Heavier topics get more study hours; topics close to assessments are scheduled earlier.
 
 **Adaptive Replanning** — At any time, you can click "Replan Remaining". This sends the AI your original syllabus, the current plan, the list of already-completed topics, and today's date. The AI generates a **new plan covering only the remaining (uncompleted) topics**, redistributed across the weeks left before the deadline, prioritizing urgent topics and allocating hours based on complexity.
 
@@ -83,7 +83,7 @@ The API route uses `response_format: { type: 'json_object' }` for reliable JSON 
 | **TypeScript** | Full type safety across the codebase |
 | **Tailwind CSS 3** | Utility-first styling with custom design tokens |
 | **Supabase** (PostgreSQL) | Database: courses, plans, completions with RLS |
-| **OpenAI GPT-4o-mini** | AI plan generation and replanning |
+| **Google Gemini 3.5 Flash** | AI plan generation and replanning |
 | **PDF.js (pdfjs-dist)** | Client-side PDF text extraction — no file upload needed |
 | **Lucide React** | Icon library |
 | **Vercel** | Hosting and deployment |

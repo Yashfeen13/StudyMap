@@ -7,7 +7,7 @@
 
 ## 🔗 Live URL
 
-**[[https://studymap-sigma.vercel.app](https://studymap-sigma.vercel.app)](https://study-map-flame.vercel.app/)**  
+**[(https://study-map-flame.vercel.app/)](https://study-map-flame.vercel.app/)**  
 _(Opens in incognito/private window with no login required)_
 
 ---

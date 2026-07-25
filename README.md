@@ -91,16 +91,7 @@ The API route uses `response_format: { type: 'json_object' }` for reliable JSON 
 
 ---
 
-## 📸 Screenshots
 
-### Dashboard
-![Dashboard showing course cards with progress bars](./docs/screenshot-dashboard.png)
-
-### AI-Generated Weekly Plan
-![Course detail page showing week-by-week study plan](./docs/screenshot-plan.png)
-
-### Replanning Flow
-![Replan button and updated plan after marking topics complete](./docs/screenshot-replan.png)
 
 ---
 

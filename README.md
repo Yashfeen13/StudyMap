@@ -112,7 +112,7 @@ The API route uses `response_format: { type: 'json_object' }` for reliable JSON 
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/studymap.git
+git clone https://github.com/Yashfeen13/studymap.git
 cd studymap
 ```
 

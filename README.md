@@ -19,6 +19,18 @@ University students receive a course syllabus at the start of term and have no i
 **Who it's for:** University and college students in any subject, worldwide.
 
 ---
+## 📸 Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Add Course
+![Add Course](screenshots/add-course.png)
+
+### Generated Study Plan
+![Study Plan](screenshots/study-plan.png)
+
+---
 
 ## ✨ Features
 
@@ -121,7 +133,7 @@ cp .env.example .env.local
 Required variables (see `.env.example`):
 
 ```env
-OPENAI_API_KEY=          # From platform.openai.com
+GEMINI_API_KEY=          # From google ai studio
 NEXT_PUBLIC_SUPABASE_URL=      # From your Supabase project → Settings → API
 NEXT_PUBLIC_SUPABASE_ANON_KEY= # From your Supabase project → Settings → API
 ```
